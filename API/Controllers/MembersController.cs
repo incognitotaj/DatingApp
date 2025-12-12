@@ -1,5 +1,6 @@
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,12 @@ namespace API.Controllers
             return await context.Users.ToListAsync();
         }
 
+        [Authorize]
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<AppUser>> GetById([FromRoute]Guid id)
+        public async Task<ActionResult<AppUser>> GetById([FromRoute] Guid id)
         {
-            var member = await context.Users.SingleOrDefaultAsync(p=>p.Id == id);
-            if(member == null) return NotFound();
+            var member = await context.Users.SingleOrDefaultAsync(p => p.Id == id);
+            if (member == null) return NotFound();
             return member;
         }
     }
